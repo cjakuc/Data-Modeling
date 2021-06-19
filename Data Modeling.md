@@ -1,0 +1,136 @@
+- [[Data Engineering]]
+    - Comprises all engineering and operational tasks required to make data available for the end-user, whether for the purposes of analytics, model building, app development, etc.
+    - Taking raw data, doing work to it, and making at accessible
+    - Data Science Hierarchy of Needs:
+        - ![](https://firebasestorage.googleapis.com/v0/b/firescript-577a2.appspot.com/o/imgs%2Fapp%2Fcjakuc%2FusFcr0dcH5.png?alt=media&token=c5ad2ca7-965e-45a3-a20a-d72cbb53b966)
+    - Data storage and processing
+    - Data Roles and skill sets
+        - ![](https://firebasestorage.googleapis.com/v0/b/firescript-577a2.appspot.com/o/imgs%2Fapp%2Fcjakuc%2Fd_BSJAvgls.png?alt=media&token=aafd9318-a67e-402c-95e4-e4d2674194d6)
+- Data Modeling
+    - Plan for your data
+    - [[Relation Database]]
+        - Advantages of Using a Relational Database
+            - Flexibility for writing in SQL - w/ SQL being the most common database query language
+            - Modeling the data not modeling queries - modeling is independent of queries
+            - Ability to do JOINS
+            - Ability to do aggregations and analytics
+            - Secondary indexes available - you have the advantage of being able to add another index to help with quick searching
+            - Smaller data volumes - if you have a smaller data volume (and not big data) you can use a relational database for its simplicity
+            - ACID Transactions - allows you to meet a set of properties of database transactions intended to guarantee validity even in the vent of errors, power failures, and thus maintain data integrity
+            - Easier to change to business requirements
+        - ACID Transactions
+            - Properties of database transactions intended to guarantee validity even in the event of errors or power failures
+                - **Atomicity**: The whole transaction is processed or nothing is processed. A commonly cited example of an atomic transaction is money transactions between two bank accounts. The transaction of transferring money from one account to the other is made up of two operations. First, you have to withdraw money in one account, and second you have to save the withdrawn money to the second account. An atomic transaction, i.e., when either all operations occur or nothing occurs, keeps the database in a consistent state. This ensures that if either of those two operations (withdrawing money from the 1st account or saving the money to the 2nd account) fail, the money is neither lost nor created. Source [Wikipedia](https://en.wikipedia.org/wiki/Atomicity_%28database_systems%29) for a detailed description of this example
+                - **Consistency**: Only transactions that abide by constraints and rules are written into the database, otherwise the database keeps the previous state. The data should be correct across all rows and tables. Check out additional information about consistency on [Wikipedia](https://en.wikipedia.org/wiki/Consistency_%28database_systems%29)
+                - **Isolation**: Transactions are processed independently and securely, order does not matter. A low level of isolation enables many users to access the data simultaneously, however this also increases the possibilities of concurrency effects (e.g., dirty reads or lost updates). On the other hand, a high level of isolation reduces these chances of concurrency effects, but also uses more system resources and transactions blocking each other. Source: [Wikipedia](https://en.wikipedia.org/wiki/Isolation_%28database_systems%29)
+                - **Durability**: Completed transactions are saved to databses even in cases of system failure. A commonly cited example includes tracking flight seat bookings. So once the flight booking records a confirmed seat booking, the seat remains booked even if a system failure occurs. Source: [Wikipedia](https://en.wikipedia.org/wiki/ACID)
+        - When Not to Use a Relational Database
+            - **Have large amounts of data**: Relational Databases are not distributed databases and because of this they can only scale vertically by adding more storage in the machine itself. You are limited by how much you can scale and how much data you can store on one machine. Yopu cannot add more machines like you can in NoSQL databases.
+            - **Need to be able to store different data type formats**: Relational databases are not designed to handle unstructured data
+            - **Need high throughput -- fast reads**: While ACID transactions bring benefits, they also slow down the process of reading and writing data. If you need very fast reads and writes, using a realtional database may not suit your needs.
+            - **Need a flexible schema**: Flexible schema can allow for columns to be added that do not have to be used by every row, saving disk space
+            - **Need high availability**: The fact that relational databases are not distributed (and even when they are, they have a coordinator/worker architecture). they have a single point of failur. When that database goes down, a fail-over to a backup system occurs and takes time.
+            - **Need horizontal scalability**: Horizontal scalability is the ability to add more machines or nodes to a system to increase performance and space for data
+    - [[NoSQL]]
+        - (Vs relational) simpler design, simpler horizontal scaling, and finer control of availability
+        - Data structures used are different than those in relational databases and make some operations faster
+        - NoSQL = Not Only SQL; NoSQL and Non Relational are interchangeable
+        - Various types of NoSQL
+        - Common types of NoSQL Databases
+            - Apache Cassandra (Partition Row Store)
+                - Data is distributed by partitions across nodes or servers and data is organized in a columns and rows format
+            - MongoDB (Document Store)
+                - Easier to do search by retrieving documents based on its contents
+            - DynamoDB (Key-Value store)
+                - Data is represented as a collection of key-value pairs
+            - Apache HBase (Wide Column Store)
+                - Uses tables, rows, and columns but schema can change from row to row
+            - Neo4J (Graph Database)
+                - Relationships between entities is the focus
+        - [[Apache Cassandra]]
+            - Keyspace - Collection of tables -> database/schema
+            - Table - A group of partitions
+            - Rows - A single item
+            - Partition
+                - Fundamental unit of access
+                - Collection of row(s)
+                - How data is distributed
+            - Primary Key
+                - Made up of a partition key and clustering columns
+            - Columns
+                - Clustering and data
+                - Labeled element
+            - ![](https://firebasestorage.googleapis.com/v0/b/firescript-577a2.appspot.com/o/imgs%2Fapp%2Fcjakuc%2FcZtorylciJ.png?alt=media&token=998b6225-2329-4f6c-864a-3ac3fd8273e8)
+            - 
+        - When to use NoSQL:
+            - **Need to be able to store different data type formats**: NoSQL was created to handle different data configurations: structured, semi-structured, and unstructured date. JSON, XML documents can all be handled easily with NoSQL
+            - **Large amounts of data**: Relational databases are not distributed databases and because of this they can only scale vertically by adding more storage in the machine itself. NoSQL databases were created to be able to be horizontally scalable. The more servers/systems you add to the database the more data that can be hosted with high availability and low latency (fast reads and writes)
+            - **Need horizontal scalability**: Horizontal scalability is the ability to add more machines or nodes to a system to increase performance and space for data
+            - **Need high throughput**: While ACID transactions bring benefits they also slow down the process of reading and writing data. If you need very fast reads and writes, using a relational database may not suit your needs
+            - **Need a flexible schema**: Flexible schema can allow for columns to be added that do not have to be used by every row, saving disk space
+            - **Need high availability**: Relational databases have a single point of failure. When that database goes down, a failover to a backup system must happen that takes time
+        - When not to use NoSQL:
+            - **When You have a small dataset**
+            - **When you need ACID Transactions**
+            - **When you need the ability to do JOINS across tables**
+            - **If you want to be able to do aggregations and analytics**
+            - **If you have changing business requirements**: Ad-hoc queries are possible but difficult as the data model was done to fix particular queries
+            - **If your queries are not available and you need the flexibility**: You need your queries in advance. If those are not available or you will need to be able to have flexibility on how you query your data you might need to stick with a relational database
+- [[Relational Data Models]]
+    - Importance of Relational Databases:
+        - **Standardization of data model**: Once your data is transformed into the rows and columns format, your data is standardized and you can query it with SQL
+        - **Flexibility in adding and altering tables**: Relational databases give you flexibility to add tables, alter tables, add and remove data
+        - **Data integrity**
+        - **SQL**: A standard language can be used to access the data with a predefined language
+        - **Simplicity**: Data is systematically stored and modeled in tabular format
+        - **Intuitive organizations**: The spreadsheet format is intuitive but intuitive to data modeling in relational databases
+    - OLAP vs OLTP
+        - **Online Analytical Processing (OLAP)**: Databases optimized for these workload allow for complex analytical and ad hoc queries, including aggregations. These types of databases are optimized for reads.
+        - **Online Transactional Processing (OLTP)**: Databases optimized for these workloads allow for less complex queries in large volume. The types of queries for these databases are read, insert, update, and delete.
+        - [Stack Overflow Post outlining OLAP vs OLTP](https://stackoverflow.com/questions/21900185/what-are-oltp-and-olap-what-is-the-difference-between-them)
+    - Structuring Your Database
+        - **Normalization**: To reduce data redundancy and increase data integrity
+            - The process of structuring a relational database in accordance with a series of normal forms in order to reduce data redundancy and increase data integrity 
+        - **Denormalization**: Must be done in read heavy workloads to increase performance
+    - Objectives of Normal Form
+        - To free the database from unwanted insertions, updates, and deletion dependencies -> changes happen in only one spot
+        - To reduce the need for refactoring the database as new types of data are introduced
+        - To make the relational model more informative to users
+        - To make the database neutral to the query statistics -> query agnostic; opposite of NoSQL
+    - Normal Forms
+        - **How to Reach First Normal Form (1NF)**:
+            - Atomic values: each cell contains unique and single values
+            - Be able to add data without altering tables -> just by adding or removing columns
+            - Separate different relations into different tables
+            - Keep relationships between tables together with foreign keys
+        - **Second Normal Form (2NF)**:
+            - Have reached 1NF
+            - All columns in the table must rely on the primary key
+        - **Third Normal Form (3NF)**:
+            - Must be in 2NF
+            - No transitive dependencies
+            - Remember, transitive dependencies you are trying to maintain is that to get from A -> C, you want to avoid going through B
+        - When to use 3NF:
+            - When you want to update data, we want to be able to do it in just 1 place
+    - Denormalization
+        - JOINS on the database allow for outstanding flexibility but are extremely slow. If you are dealing with heavy reads on your database, you may want to think about denormalizing your tables. You get your data into normalized form, and then you proceed with denormalization. So, denormalization comes after normalization.
+    - [Fact Tables](https://en.wikipedia.org/wiki/Fact_table) and [Dimension Tables](https://en.wikipedia.org/wiki/Dimension_(data_warehouse))
+        - Work together to create an organized data model
+        - While fact and dimension tables are not created differently in the DDL, they are conceptual and extremely important for organization
+        - Star and Snowflake Schemas
+    - [Star Schema](https://en.wikipedia.org/wiki/Star_schema)
+        - Simplest style of data mart schema. The star schema consists of one or more fact tables referencing any number of dimension tables
+        - Fact table at its center, surrounded by dimension tables
+    - Benefits of Star Schema
+        - Denormalized
+        - Simplify queries
+        - Fast aggregations
+    - Drawbacks of Star Schema
+        - Issues that come with denormalization
+        - Data integrity
+        - Decrease query flexibility
+        - Many to many relationships -- simplified
+    - [Snowflake Schema](https://en.wikipedia.org/wiki/Snowflake_schema)
+        - [Medium comparison between Star and Snowflake](https://medium.com/@BluePi_In/deep-diving-in-the-world-of-data-warehousing-78c0d52f49a)
+        - Logical arrangement of tables in a multidimensional database represented by centralized fact tables which are connected to multiple dimensions
+            - Dimension tables can have multiple dimension tables branching off of them
